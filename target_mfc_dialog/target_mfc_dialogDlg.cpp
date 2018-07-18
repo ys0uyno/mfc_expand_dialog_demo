@@ -63,6 +63,8 @@ BEGIN_MESSAGE_MAP(Ctarget_mfc_dialogDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON_EXPAND_COLLAPSE, &Ctarget_mfc_dialogDlg::OnBnClickedButtonExpandCollapse)
+	ON_BN_CLICKED(IDC_BUTTON_HIDED, &Ctarget_mfc_dialogDlg::OnBnClickedButtonHided)
 END_MESSAGE_MAP()
 
 
@@ -98,6 +100,9 @@ BOOL Ctarget_mfc_dialogDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 
 	// TODO: Add extra initialization here
+	GetWindowRect(&expand_crect);
+	is_show = FALSE;
+	OnBnClickedButtonExpandCollapse();
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -151,3 +156,32 @@ HCURSOR Ctarget_mfc_dialogDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void Ctarget_mfc_dialogDlg::OnBnClickedButtonExpandCollapse()
+{
+	// TODO: Add your control notification handler code here
+	CButton *btn_Hide = (CButton *)GetDlgItem(IDC_BUTTON_EXPAND_COLLAPSE);
+	btn_Hide->GetWindowRect(&collapse_crect);
+	if (is_show == TRUE)
+	{
+		SetWindowPos(NULL, 0, 0, expand_crect.Width(), expand_crect.Height(),
+			SWP_NOZORDER | SWP_NOMOVE);
+
+		is_show = FALSE;
+		this->SetDlgItemText(IDC_BUTTON_EXPAND_COLLAPSE, L"¦æ");
+	}
+	else
+	{
+		is_show = TRUE;
+		SetWindowPos(NULL, 0, 0, expand_crect.Width(), expand_crect.Height() - 100, SWP_NOZORDER | SWP_NOMOVE);
+		this->SetDlgItemText(IDC_BUTTON_EXPAND_COLLAPSE, L"¦ç");
+	}
+}
+
+
+void Ctarget_mfc_dialogDlg::OnBnClickedButtonHided()
+{
+	// TODO: Add your control notification handler code here
+	AfxMessageBox(L"ButtonHided click");
+}
